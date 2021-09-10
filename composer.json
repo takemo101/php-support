@@ -1,0 +1,33 @@
+{
+    "name": "takemo101/php-support",
+    "description": "PHP Package Develop Support Tool",
+    "keywords": [
+        "php",
+        "package",
+        "collection",
+        "enum"
+    ],
+    "authors": [{
+        "name": "takemo101",
+        "email": "takemo101@gmail.com",
+        "role": "Developer"
+    }],
+    "homepage": "https://github.com/takemo101/php-support",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Takemo101\\PHPSupport\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "test/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
