@@ -5,7 +5,7 @@ namespace Takemo101\PHPSupport\Path;
 /**
  * path helper class
  */
-class Path
+final class Path
 {
     /**
      * パスの結合

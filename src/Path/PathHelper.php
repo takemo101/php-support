@@ -24,17 +24,25 @@ class PathHelper
             return '';
         }
 
+        $first = $args[0];
+
         $components = [];
         foreach ($args as $component) {
             $components = [
                 ...$components,
-                ...array_filter(explode('/', $component))
+                ...array_filter(explode($this->separator, $component))
             ];
         }
 
         $result = $this->normalize($components);
 
-        return implode($this->separator, $result);
+        $result = implode($this->separator, $result);
+
+        if (strpos($first, $this->separator) === 0) {
+            $result = $this->separator . $result;
+        }
+
+        return $result;
     }
 
     /**
@@ -46,7 +54,7 @@ class PathHelper
     public function split(string $path): array
     {
         return $this->normalize(
-            array_filter(explode('/', $path))
+            array_filter(explode($this->separator, $path))
         );
     }
 
