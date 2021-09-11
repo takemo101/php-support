@@ -8,6 +8,19 @@ namespace Takemo101\PHPSupport\Arr;
 final class Arr
 {
     /**
+     * dot 記法から最初のキーと残りのキーを返す
+     *
+     * @param string $key
+     * @return array<string>
+     */
+    public static function firstDotKey(string $key): array
+    {
+        $firstKey = explode('.', $key)[0];
+        $lastKey = ltrim(ltrim($key, $firstKey), '.');
+        return [$firstKey, $lastKey];
+    }
+
+    /**
      * ドット記法での配列を返す
      *
      * @param array $array
@@ -15,7 +28,7 @@ final class Arr
      */
     public static function dot(array $array): array
     {
-        return ArrAccess::of($array)->dot();
+        return self::createHelper($array)->dot();
     }
 
     /**
@@ -26,7 +39,7 @@ final class Arr
      */
     public static function undot(array $array): array
     {
-        return ArrAccess::of()->undot($array)->all();
+        return self::createHelper()->undot($array)->all();
     }
 
     /**
@@ -39,7 +52,7 @@ final class Arr
      */
     public static function set(array &$array, string $key, $value): array
     {
-        $array = ArrAccess::of($array)->set($key, $value)->all();
+        $array = self::createHelper($array)->set($key, $value)->all();
         return $array;
     }
 
@@ -52,7 +65,7 @@ final class Arr
      */
     public static function has(array $array, string $key): bool
     {
-        return ArrAccess::of($array)->has($key);
+        return self::createHelper($array)->has($key);
     }
 
     /**
@@ -66,7 +79,7 @@ final class Arr
 
     public static function get(array $array, string $key, $default = null)
     {
-        return ArrAccess::of($array)->get($key, $default);
+        return self::createHelper($array)->get($key, $default);
     }
 
     /**
@@ -79,7 +92,7 @@ final class Arr
      */
     public static function pluck(array $array, string $value, ?string $key = null): array
     {
-        return ArrAccess::of($array)->pluck($value, $key);
+        return self::createHelper($array)->pluck($value, $key);
     }
 
     /**
@@ -91,7 +104,7 @@ final class Arr
      */
     public static function forget(array &$array, $keys): array
     {
-        $array = ArrAccess::of($array)->forget($keys)->all();
+        $array = self::createHelper($array)->forget($keys)->all();
         return $array;
     }
 
@@ -104,7 +117,7 @@ final class Arr
      */
     public static function except(array $array, $keys): array
     {
-        return ArrAccess::of($array)->except($keys);
+        return self::createHelper($array)->except($keys);
     }
 
     /**
@@ -116,7 +129,7 @@ final class Arr
      */
     public static function only(array $array, $keys): array
     {
-        return ArrAccess::of($array)->only($keys);
+        return self::createHelper($array)->only($keys);
     }
 
     /**
@@ -128,7 +141,7 @@ final class Arr
      */
     public static function missing(array $array, $keys): array
     {
-        return ArrAccess::of($array)->missing($keys);
+        return self::createHelper($array)->missing($keys);
     }
 
     /**
@@ -139,6 +152,17 @@ final class Arr
      */
     public static function query(array $array)
     {
-        return ArrAccess::of($array)->query();
+        return self::createHelper($array)->query();
+    }
+
+    /**
+     * ヘルパーの生成
+     *
+     * @param array $array
+     * @return ArrAccess
+     */
+    protected static function createHelper(array $array = []): ArrAccess
+    {
+        return ArrAccess::of($array);
     }
 }
