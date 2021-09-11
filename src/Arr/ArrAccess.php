@@ -8,13 +8,14 @@ namespace Takemo101\PHPSupport\Arr;
 class ArrAccess
 {
     /**
-     * @var array
+     * construct
+     *
+     * @param array $array
      */
-    protected $array;
-
-    public function __construct(array $array = [])
-    {
-        $this->array = $array;
+    public function __construct(
+        protected array $array = []
+    ) {
+        //
     }
 
     /**
