@@ -5,11 +5,12 @@ namespace Takemo101\PHPSupport\Enum;
 use ReflectionClass;
 use BadMethodCallException;
 use UnexpectedValueException;
+use JsonSerializable;
 
 /**
  * abstract enum class
  */
-abstract class AbstractEnum
+abstract class AbstractEnum implements JsonSerializable
 {
     /**
      * enum value
@@ -54,7 +55,7 @@ abstract class AbstractEnum
     }
 
     /**
-     * enum value
+     * Enumインスタンスの値を返す
      *
      * @return mixed
      */
@@ -64,13 +65,25 @@ abstract class AbstractEnum
     }
 
     /**
-     * enum key
+     * Enumインスタンスの定数名を返す
      *
      * @return string
      */
     public function key()
     {
         return $this->key;
+    }
+
+    /**
+     * Enumの値が一致するか
+     *
+     * @param mixed $enum
+     * @return bool
+     */
+    public function equals($enum): bool
+    {
+        return $enum instanceof static
+            && $this->value() === $enum->value();
     }
 
     /**
@@ -84,19 +97,17 @@ abstract class AbstractEnum
     }
 
     /**
-     * equals enum
+     * serialize value.
      *
-     * @param mixed $enum
-     * @return bool
+     * @return mixed
      */
-    final public function equals($enum): bool
+    public function jsonSerialize()
     {
-        return $enum instanceof static
-            && $this->value() === $enum->value();
+        return $this->value;
     }
 
     /**
-     * return all enum keys
+     * 全てのEnumの定数名を返す
      *
      * @return array<string>
      */
@@ -106,11 +117,21 @@ abstract class AbstractEnum
     }
 
     /**
-     * return all enum instances
+     * 全てのEnumの値を返す
+     *
+     * @return array<string>
+     */
+    public static function values(): array
+    {
+        return array_values(static::asArray());
+    }
+
+    /**
+     * 全てのEnumインスタンスを返す
      *
      * @return array<static>
      */
-    public static function values(): array
+    public static function constants()
     {
         $values = [];
 
@@ -122,9 +143,11 @@ abstract class AbstractEnum
     }
 
     /**
-     * find and check value to key
+     * Enumの値が定義した定数に含まれるかチェックして
+     * 含まれた場合一致した定数名を返す
      *
      * @param mixed $value
+     * @throws UnexpectedValueException
      * @return string
      */
     protected static function findCheckValueToKey($value): string
@@ -137,7 +160,9 @@ abstract class AbstractEnum
     }
 
     /**
-     * search value to key
+     * Enumの値が定義した定数に含まれるかを検索する
+     * 含まれた場合は一致した定数名を返し
+     * 一致しなかった場合はfalseを返す
      *
      * @param mixed $value
      * @return string|boolean
@@ -148,7 +173,7 @@ abstract class AbstractEnum
     }
 
     /**
-     * return all enum array
+     * 定数名 => 値 の配列を返す
      *
      * @return array
      */
