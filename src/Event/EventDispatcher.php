@@ -26,7 +26,7 @@ class EventDispatcher
      *
      * @var array<array>
      */
-    protected $map = [];
+    private $map = [];
 
     public function __construct(?Contract $resolver = null)
     {
@@ -113,7 +113,7 @@ class EventDispatcher
      * @param object $event
      * @return void
      */
-    protected function executeListener(string $listener, object $event)
+    private function executeListener(string $listener, object $event)
     {
         $method = self::ListenerMethodName;
 
