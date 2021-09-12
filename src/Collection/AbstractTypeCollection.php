@@ -44,32 +44,6 @@ abstract class AbstractTypeCollection extends AbstractArrayCollection
     }
 
     /**
-     * マップ
-     *
-     * @param callable $callback
-     * @return mixed|array
-     */
-    public function map(callable $callback)
-    {
-        $elements = parent::map($callback);
-
-        return new static($elements);
-    }
-
-    /**
-     * フィルター
-     *
-     * @param callable $callback
-     * @return mixed|array
-     */
-    public function filter(callable $callback)
-    {
-        $elements = parent::filter($callback);
-
-        return new static($elements);
-    }
-
-    /**
      * 要素を入れ替える
      *
      * @param array $elements

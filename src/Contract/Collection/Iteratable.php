@@ -27,7 +27,7 @@ interface Iteratable extends
      *
      * @return array
      */
-    public function items(): array;
+    public function all(): array;
 
     /**
      * 要素が存在するか？

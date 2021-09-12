@@ -54,7 +54,7 @@ interface Collection
      * マップ
      *
      * @param callable $callback
-     * @return mixed|array
+     * @return self
      */
     public function map(callable $callback);
 
@@ -62,7 +62,7 @@ interface Collection
      * フィルター
      *
      * @param callable $callback
-     * @return mixed|array
+     * @return self
      */
     public function filter(callable $callback);
 

@@ -2,20 +2,26 @@
 
 namespace Takemo101\PHPSupport\Arr;
 
+use Takemo101\PHPSupport\Arr\Support\IterableTrait;
+use Takemo101\PHPSupport\Contract\Collection\Iteratable;
+use JsonSerializable;
+
 /**
  * array access class
  */
-class ArrAccess
+class ArrAccess implements Iteratable, JsonSerializable
 {
+    use IterableTrait;
+
     /**
      * construct
      *
      * @param array $array
      */
     public function __construct(
-        protected array $array = []
+        array $array = []
     ) {
-        //
+        $this->array = $array;
     }
 
     /**
@@ -269,6 +275,27 @@ class ArrAccess
     public function all(): array
     {
         return $this->array;
+    }
+
+    /**
+     * 全ての配列を返す
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->all();
+    }
+
+
+    /**
+     * serialize value.
+     *
+     * @return mixed
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 
     /**
