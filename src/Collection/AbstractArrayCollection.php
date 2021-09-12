@@ -8,11 +8,12 @@ use Takemo101\PHPSupport\Contract\Collection\{
     Iteratable,
 };
 use OutOfBoundsException;
+use JsonSerializable;
 
 /**
  * abstract array collection class
  */
-abstract class AbstractArrayCollection implements Collection, Iteratable
+abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSerializable
 {
     use IterableTrait;
 
@@ -91,22 +92,26 @@ abstract class AbstractArrayCollection implements Collection, Iteratable
      * マップ
      *
      * @param callable $callback
-     * @return mixed|array
+     * @return self
      */
     public function map(callable $callback)
     {
-        return array_map($callback, $this->item);
+        return new static(
+            array_map($callback, $this->item)
+        );
     }
 
     /**
      * フィルター
      *
      * @param callable $callback
-     * @return mixed|array
+     * @return self
      */
     public function filter(callable $callback)
     {
-        return array_filter($this->items, $callback);
+        return new static(
+            array_filter($this->items, $callback)
+        );
     }
 
     /**
@@ -153,5 +158,26 @@ abstract class AbstractArrayCollection implements Collection, Iteratable
         $this->items = $elements;
 
         return $this;
+    }
+
+    /**
+     * 全ての配列を返す
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->all();
+    }
+
+
+    /**
+     * serialize value.
+     *
+     * @return mixed
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

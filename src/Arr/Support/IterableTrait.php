@@ -1,6 +1,6 @@
 <?php
 
-namespace Takemo101\PHPSupport\Collection\Support;
+namespace Takemo101\PHPSupport\Arr\Support;
 
 use ArrayIterator;
 use Traversable;
@@ -10,14 +10,14 @@ trait IterableTrait
     /**
      * @var array
      */
-    protected $items = [];
+    protected $array = [];
 
     /**
      * implement IteratorAggregate
      */
     public function getIterator(): Traversable
     {
-        return new ArrayIterator($this->items);
+        return new ArrayIterator($this->array);
     }
 
     /**
@@ -49,7 +49,7 @@ trait IterableTrait
      */
     public function offsetUnset($offset)
     {
-        $this->remove($offset);
+        $this->forget($offset);
     }
 
     /**
@@ -57,7 +57,7 @@ trait IterableTrait
      */
     public function count(): int
     {
-        return count($this->items);
+        return count($this->array);
     }
 
     /**
@@ -77,7 +77,7 @@ trait IterableTrait
      */
     public function all(): array
     {
-        return $this->items;
+        return $this->array;
     }
 
     /**
