@@ -7,5 +7,11 @@ namespace Takemo101\PHPSupport\Contract\Event;
  */
 interface ListenerResolver
 {
+    /**
+     * リスナーの生成処理
+     *
+     * @param string $listener
+     * @return object
+     */
     public function create(string $listener): object;
 }

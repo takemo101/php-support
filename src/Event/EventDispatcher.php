@@ -129,7 +129,7 @@ class EventDispatcher
     /**
      * リスナー解決クラスをセット
      *
-     * @param ListenerResolverContract $resolver
+     * @param Contract $resolver
      * @return self
      */
     public function setListenerResolver(Contract $resolver): self
