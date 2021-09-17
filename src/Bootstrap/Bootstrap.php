@@ -12,7 +12,7 @@ class Bootstrap
     /**
      * @var array<string>
      */
-    protected $loader = [
+    private $loader = [
         //
     ];
 
@@ -21,7 +21,7 @@ class Bootstrap
      *
      * @var Contract
      */
-    protected $resolver;
+    private $resolver;
 
     public function __construct(?Contract $resolver = null)
     {
@@ -65,7 +65,7 @@ class Bootstrap
      *
      * @return void
      */
-    protected function load()
+    private function load()
     {
         foreach ($this->loader as $loader) {
             $this->resolver

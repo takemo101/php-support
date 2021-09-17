@@ -30,3 +30,7 @@ PHP で Package 開発を行うのに必要な実装サポートツールをま�
 ## Path
 
 パス加工をサポート（主に結合）
+
+## DataTransferObject（DTO）
+
+DataTransferObject の実装をサポート
