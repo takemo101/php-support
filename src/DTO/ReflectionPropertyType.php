@@ -22,7 +22,7 @@ final class ReflectionPropertyType implements PropertyType
     /**
      * construct
      *
-     * @param string $comment
+     * @param ReflectionNamedType $type
      */
     public function __construct(
         ReflectionNamedType $type

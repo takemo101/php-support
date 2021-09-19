@@ -41,6 +41,22 @@ final class PropertyTypes
     }
 
     /**
+     * インスタンスタイプがあれば返す
+     *
+     * @return PropertyType|null
+     */
+    public function firstInstanceType(): ?PropertyType
+    {
+        foreach ($this->types as $type) {
+            if (!($type->isOptional() || $type->isBuiltin())) {
+                return $type;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * コレクションのタイプと値のタイプが一致するか
      *
      * @param mixed $value

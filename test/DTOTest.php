@@ -7,16 +7,24 @@ use Takemo101\PHPSupport\DTO\{
     AbstractDTO,
     AccessGetter,
     AccessSetter,
+    TypeHelper,
+    TypeResolver,
 };
 use Takemo101\PHPSupport\Contract\DTO\Faker;
 
 use stdClass;
+use DateTime;
 
 /**
  * dto test
  */
 class DTOTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        TypeHelper::setTypeResolver(new TypeResolver);
+    }
+
     public function test__DTO__construct__ok()
     {
         $a = 'a';
@@ -71,6 +79,18 @@ class DTOTest extends TestCase
         $this->assertEquals($dto->b, $b);
         $this->assertEquals($dto->c, $c);
     }
+
+    public function test__TypeResolver__ok()
+    {
+        $dto = DTO::fake();
+
+        $f = '2014-01-01T15:03:01.012345Z';
+        $date = new DateTime($f);
+
+        $dto->f = $f;
+
+        $this->assertEquals($dto->f->getTimestamp(), $date->getTimestamp());
+    }
 }
 
 class DTO extends AbstractDTO implements Faker
@@ -119,6 +139,8 @@ class DTO extends AbstractDTO implements Faker
      */
     private $e;
 
+    private DateTime $f;
+
     public function getA(): string
     {
         return $this->a;
@@ -144,6 +166,11 @@ class DTO extends AbstractDTO implements Faker
         return $this->e;
     }
 
+    public function getF(): DateTime
+    {
+        return $this->f;
+    }
+
     public function convertPropType(string $e): PropTypeContract
     {
         return new PropType($e);
@@ -162,6 +189,7 @@ class DTO extends AbstractDTO implements Faker
             'cc' => null,
             'd' => new stdClass,
             'e' => 'e',
+            'f' => '2011-01-01T15:03:01.012345Z',
         ];
     }
 }
