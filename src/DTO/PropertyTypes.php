@@ -75,7 +75,10 @@ final class PropertyTypes
                     if ($valueType == $propertyType) {
                         return true;
                     }
-                } else if ($value instanceof $propertyType) {
+                } else if (
+                    (class_exists($propertyType) || interface_exists($propertyType)) &&
+                    ($value instanceof $propertyType)
+                ) {
                     return true;
                 }
             }
