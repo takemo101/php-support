@@ -25,8 +25,23 @@ abstract class AbstractDTO implements JsonSerializable
      */
     protected $__aliases = [];
 
+    /**
+     * DTOのaliasesのキーと値を逆転させたものを入れる
+     *
+     * @var array
+     */
+    private $__flipAliases = [];
+
+    /**
+     * プロパティ値をセットするときの変換処理の設定
+     *
+     * @var array
+     */
+    protected $__converters = [];
+
     public function __construct(array $inputs = [])
     {
+        $this->__flipAliases = array_flip($this->__aliases);
         $this->loadProperties($inputs);
     }
 
@@ -58,6 +73,8 @@ abstract class AbstractDTO implements JsonSerializable
             } else {
                 continue;
             }
+
+            $value = $this->convertProperty($name, $value);
 
             // 型が一致しなければ例外
             if (!$types->compare($value)) {
@@ -130,12 +147,12 @@ abstract class AbstractDTO implements JsonSerializable
 
         $reflection = new ReflectionClass($this);
 
+        $aliases = $this->filpAliases();
+
         $result = [];
 
-        array_flip($this->__aliases);
-
         foreach ($collection as $name => $types) {
-            $alias = $this->__aliases[$name] ?? $name;
+            $alias = $aliases[$name] ?? $name;
 
             // 値を対象プロパティから取り出す
             $property = $reflection->getProperty($name);
@@ -144,6 +161,48 @@ abstract class AbstractDTO implements JsonSerializable
         }
 
         return $result;
+    }
+
+    /**
+     * aliasesのキーと値の逆転した配列を返す
+     *
+     * @return array
+     */
+    public function filpAliases(): array
+    {
+        return $this->__flipAliases;
+    }
+
+    /**
+     * プロパティ変換
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function convertProperty(string $name, $value)
+    {
+        $converters = $this->propertyConverters();
+        if (array_key_exists($name, $converters)) {
+            $converter = $converters[$name];
+
+            if (is_callable($converter)) {
+                return call_user_func($converter, $value);
+            } else if (is_string($converter) && method_exists($this, $converter)) {
+                return call_user_func([$this, $converter], $value);
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * プロパティ変換配列を返す
+     *
+     * @return array
+     */
+    protected function propertyConverters(): array
+    {
+        return $this->__converters;
     }
 
     /**

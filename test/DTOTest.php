@@ -23,7 +23,7 @@ class DTOTest extends TestCase
         $b = 2;
         $c = null;
         $d = new stdClass;
-        $e = new PropType;
+        $e = 'e';
 
         $dto = new DTO([
             'a' => $a,
@@ -37,7 +37,7 @@ class DTOTest extends TestCase
         $this->assertEquals($dto->getB(), $b);
         $this->assertEquals($dto->getC(), $c);
         $this->assertTrue($dto->getD() instanceof $d);
-        $this->assertTrue($dto->getE() instanceof $e);
+        $this->assertTrue($dto->getE() instanceof PropTypeContract);
     }
 
     public function test__FakeFactory__faker__ok()
@@ -84,6 +84,15 @@ class DTO extends AbstractDTO implements Faker
      */
     protected $__aliases = [
         'c' => 'cc',
+    ];
+
+    /**
+     * 初期値をセットするときの変換処理の設定
+     *
+     * @var array
+     */
+    protected $__converters = [
+        'e' => 'convertPropType',
     ];
 
     /**
@@ -135,6 +144,11 @@ class DTO extends AbstractDTO implements Faker
         return $this->e;
     }
 
+    public function convertPropType(string $e): PropTypeContract
+    {
+        return new PropType($e);
+    }
+
     /**
      * fake parameter
      *
@@ -147,7 +161,7 @@ class DTO extends AbstractDTO implements Faker
             'b' => 1,
             'cc' => null,
             'd' => new stdClass,
-            'e' => new PropType,
+            'e' => 'e',
         ];
     }
 }
@@ -159,5 +173,10 @@ interface PropTypeContract
 
 class PropType implements PropTypeContract
 {
-    //
+    public $e;
+
+    public function __construct(string $e)
+    {
+        $this->e = $e;
+    }
 }

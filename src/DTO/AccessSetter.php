@@ -16,10 +16,11 @@ trait AccessSetter
         // プロパティタイプコレクションの生成
         $collection = PropertyTypesCollection::fromDTO($this);
 
-        $aliases = array_flip($this->__aliases);
+        $aliases = $this->filpAliases();
         $alias = $aliases[$name] ?? $name;
 
         $types = $collection->findByPropertyName($alias);
+        $value = $this->convertProperty($name, $value);
 
         if (!$types->compare($value)) {
             $type = gettype($value);
