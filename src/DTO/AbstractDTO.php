@@ -74,13 +74,11 @@ abstract class AbstractDTO implements JsonSerializable
                 continue;
             }
 
+            // 値変換
             $value = $this->convertProperty($name, $value);
 
-            // 型が一致しなければ例外
-            if (!$types->compare($value)) {
-                $type = gettype($value);
-                throw new PropertyTypeException("type does not match [{$type}]");
-            }
+            // 型チェック
+            $value = TypeHelper::check($types, $value);
 
             // 値を対象プロパティに入れる
             $property = $reflection->getProperty($name);

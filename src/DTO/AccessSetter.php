@@ -20,12 +20,12 @@ trait AccessSetter
         $alias = $aliases[$name] ?? $name;
 
         $types = $collection->findByPropertyName($alias);
+
+        // 値変換
         $value = $this->convertProperty($name, $value);
 
-        if (!$types->compare($value)) {
-            $type = gettype($value);
-            throw new PropertyTypeException("type does not match [{$type}]");
-        }
+        // 型チェック
+        $value = TypeHelper::check($types, $value);
 
         $this->$alias = $value;
     }
