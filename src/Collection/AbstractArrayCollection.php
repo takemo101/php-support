@@ -89,6 +89,26 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
     }
 
     /**
+     * キー配列を返す
+     *
+     * @return array
+     */
+    public function keys(): array
+    {
+        return array_keys($this->items);
+    }
+
+    /**
+     * 値配列を返す
+     *
+     * @return array
+     */
+    public function values(): array
+    {
+        return array_values($this->items);
+    }
+
+    /**
      * マップ
      *
      * @param callable $callback
@@ -145,6 +165,48 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
         reset($this->items);
 
         return $item;
+    }
+
+    /**
+     * 現在の要素のキーを返す
+     *
+     * @return mixed
+     */
+    public function key()
+    {
+        if ($this->isEmpty()) {
+            throw new OutOfBoundsException('collection is empty');
+        }
+
+        return key($this->items);
+    }
+
+    /**
+     * 次の要素を返す
+     *
+     * @return mixed
+     */
+    public function next()
+    {
+        if ($this->isEmpty()) {
+            throw new OutOfBoundsException('collection is empty');
+        }
+
+        return next($this->items);
+    }
+
+    /**
+     * 現在の要素を返す
+     *
+     * @return mixed
+     */
+    public function current()
+    {
+        if ($this->isEmpty()) {
+            throw new OutOfBoundsException('collection is empty');
+        }
+
+        return current($this->items);
     }
 
     /**

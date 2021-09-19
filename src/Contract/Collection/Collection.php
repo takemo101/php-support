@@ -51,6 +51,20 @@ interface Collection
     public function has($key): bool;
 
     /**
+     * キー配列を返す
+     *
+     * @return array
+     */
+    public function keys(): array;
+
+    /**
+     * 値配列を返す
+     *
+     * @return array
+     */
+    public function values(): array;
+
+    /**
      * マップ
      *
      * @param callable $callback
@@ -79,6 +93,27 @@ interface Collection
      * @return mixed
      */
     public function last();
+
+    /**
+     * 現在の要素のキーを返す
+     *
+     * @return mixed
+     */
+    public function key();
+
+    /**
+     * 次の要素を返す
+     *
+     * @return mixed
+     */
+    public function next();
+
+    /**
+     * 現在の要素を返す
+     *
+     * @return mixed
+     */
+    public function current();
 
     /**
      * 要素を入れ替える
