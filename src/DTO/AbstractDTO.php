@@ -26,13 +26,6 @@ abstract class AbstractDTO implements JsonSerializable
     protected $__aliases = [];
 
     /**
-     * DTOのaliasesのキーと値を逆転させたものを入れる
-     *
-     * @var array
-     */
-    private $__flipAliases = [];
-
-    /**
      * プロパティ値をセットするときの変換処理の設定
      *
      * @var array
@@ -41,7 +34,7 @@ abstract class AbstractDTO implements JsonSerializable
 
     public function __construct(array $inputs = [])
     {
-        $this->__flipAliases = array_flip($this->__aliases);
+        PropertyFlipAliasesCache::cache($this);
         $this->loadProperties($inputs);
     }
 
@@ -64,8 +57,10 @@ abstract class AbstractDTO implements JsonSerializable
 
         $reflection = new ReflectionClass($this);
 
+        $aliases = $this->propertyAliases();
+
         foreach ($collection as $name => $types) {
-            $alias = $this->__aliases[$name] ?? $name;
+            $alias = $aliases[$name] ?? $name;
 
             if (array_key_exists($alias, $inputs)) {
                 // 別名の値を取り出す
@@ -75,7 +70,7 @@ abstract class AbstractDTO implements JsonSerializable
             }
 
             // 値変換
-            $value = $this->convertProperty($name, $value);
+            $value = TypeHelper::convert($this, $name, $value);
 
             // 型チェック
             $value = TypeHelper::check($types, $value);
@@ -145,7 +140,7 @@ abstract class AbstractDTO implements JsonSerializable
 
         $reflection = new ReflectionClass($this);
 
-        $aliases = $this->filpAliases();
+        $aliases = PropertyFlipAliasesCache::find($this);
 
         $result = [];
 
@@ -162,35 +157,13 @@ abstract class AbstractDTO implements JsonSerializable
     }
 
     /**
-     * aliasesのキーと値の逆転した配列を返す
+     * プロパティーのエイリアス配列を返す
      *
      * @return array
      */
-    public function filpAliases(): array
+    public function propertyAliases(): array
     {
-        return $this->__flipAliases;
-    }
-
-    /**
-     * プロパティ変換
-     *
-     * @param mixed $value
-     * @return mixed
-     */
-    protected function convertProperty(string $name, $value)
-    {
-        $converters = $this->propertyConverters();
-        if (array_key_exists($name, $converters)) {
-            $converter = $converters[$name];
-
-            if (is_callable($converter)) {
-                return call_user_func($converter, $value);
-            } else if (is_string($converter) && method_exists($this, $converter)) {
-                return call_user_func([$this, $converter], $value);
-            }
-        }
-
-        return $value;
+        return $this->__aliases;
     }
 
     /**
@@ -198,7 +171,7 @@ abstract class AbstractDTO implements JsonSerializable
      *
      * @return array
      */
-    protected function propertyConverters(): array
+    public function propertyConverters(): array
     {
         return $this->__converters;
     }

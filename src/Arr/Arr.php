@@ -15,9 +15,7 @@ final class Arr
      */
     public static function firstDotKey(string $key): array
     {
-        $firstKey = explode('.', $key)[0];
-        $lastKey = ltrim(ltrim($key, $firstKey), '.');
-        return [$firstKey, $lastKey];
+        return self::createHelper()->firstDotKey($key);
     }
 
     /**

@@ -9,6 +9,11 @@ use Takemo101\PHPSupport\Contract\DTO\TypeResolver as Contract;
  */
 final class TypeHelper
 {
+    /**
+     * DTO type resolver
+     *
+     * @var null|Contract
+     */
     protected static $typeResolver = null;
 
     /**
@@ -44,6 +49,31 @@ final class TypeHelper
 
             $type = gettype($value);
             throw new PropertyTypeException("type does not match [{$type}]");
+        }
+
+        return $value;
+    }
+
+    /**
+     * DTOのプロパティ変換
+     *
+     * @param AbstractDTO $dto
+     * @param string $name
+     * @param mixed $value
+     * @return mixed
+     */
+    public static function convert(AbstractDTO $dto, string $name, $value)
+    {
+        $converters = $dto->propertyConverters();
+
+        if (array_key_exists($name, $converters)) {
+            $converter = $converters[$name];
+
+            if (is_callable($converter)) {
+                return call_user_func($converter, $value);
+            } else if (is_string($converter) && method_exists($dto, $converter)) {
+                return call_user_func([$dto, $converter], $value);
+            }
         }
 
         return $value;

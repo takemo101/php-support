@@ -13,6 +13,8 @@ class ArrAccess implements Iteratable, JsonSerializable
 {
     use IterableTrait;
 
+    const DOT_SEPARATOR = '.';
+
     /**
      * construct
      *
@@ -22,6 +24,19 @@ class ArrAccess implements Iteratable, JsonSerializable
         array $array = []
     ) {
         $this->array = $array;
+    }
+
+    /**
+     * dot 記法から最初のキーと残りのキーを返す
+     *
+     * @param string $key
+     * @return array<string>
+     */
+    public function firstDotKey(string $key): array
+    {
+        $firstKey = explode(self::DOT_SEPARATOR, $key)[0];
+        $lastKey = ltrim(ltrim($key, $firstKey), self::DOT_SEPARATOR);
+        return [$firstKey, $lastKey];
     }
 
     /**
@@ -63,7 +78,7 @@ class ArrAccess implements Iteratable, JsonSerializable
         foreach ($array as $key => $value) {
 
             if (is_array($value)) {
-                $result = array_merge($result, $this->dotting($value, $prepend . $key . '.'));
+                $result = array_merge($result, $this->dotting($value, $prepend . $key . self::DOT_SEPARATOR));
             } else {
                 $result[$prepend . $key] = $value;
             }
@@ -82,7 +97,7 @@ class ArrAccess implements Iteratable, JsonSerializable
     public function set(string $key, $value): self
     {
 
-        $keys = explode('.', $key);
+        $keys = explode(self::DOT_SEPARATOR, $key);
 
         $result = &$this->array;
 
@@ -141,11 +156,11 @@ class ArrAccess implements Iteratable, JsonSerializable
             return $result[$key];
         }
 
-        if (strpos($key, '.') === false) {
+        if (strpos($key, self::DOT_SEPARATOR) === false) {
             return $default;
         }
 
-        foreach (explode('.', $key) as $segment) {
+        foreach (explode(self::DOT_SEPARATOR, $key) as $segment) {
             if (!is_array($result) || !array_key_exists($segment, $result)) {
                 return $default;
             }
@@ -193,7 +208,7 @@ class ArrAccess implements Iteratable, JsonSerializable
 
         foreach ((array)$keys as $key) {
 
-            $parts = explode('.', $key);
+            $parts = explode(self::DOT_SEPARATOR, $key);
 
             while (count($parts) > 1) {
                 $part = array_shift($parts);

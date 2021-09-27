@@ -16,7 +16,7 @@ trait AccessGetter
         // プロパティタイプコレクションの生成
         $collection = PropertyTypesCollection::fromDTO($this);
 
-        $aliases = $this->filpAliases();
+        $aliases = PropertyFlipAliasesCache::find($this);
         $alias = $aliases[$name] ?? $name;
 
         $value = $this->$alias;
