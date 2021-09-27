@@ -14,7 +14,7 @@ trait AccessSetter
     public function __set(string $name, $value)
     {
         // プロパティタイプコレクションの生成
-        $collection = PropertyTypesCollection::fromDTO($this);
+        $collection = PropertyTypesCollection::fromObject($this);
 
         $aliases = PropertyFlipAliasesCache::find($this);
         $alias = $aliases[$name] ?? $name;

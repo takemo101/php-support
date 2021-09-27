@@ -8,7 +8,7 @@ use JsonSerializable;
 /**
  * DTOのベースクラス
  */
-abstract class AbstractDTO implements JsonSerializable
+abstract class AbstractObject implements JsonSerializable
 {
     /**
      * DTOの不許可プロパティ名
@@ -48,7 +48,7 @@ abstract class AbstractDTO implements JsonSerializable
     public function loadProperties(array $inputs)
     {
         // プロパティタイプコレクションの生成
-        $collection = PropertyTypesCollection::fromDTO($this);
+        $collection = PropertyTypesCollection::fromObject($this);
 
         // inputsが空配列であれば処理しない
         if (count($inputs) == 0) {
@@ -136,7 +136,7 @@ abstract class AbstractDTO implements JsonSerializable
     public function properties(): array
     {
         // プロパティタイプコレクションの生成
-        $collection = PropertyTypesCollection::fromDTO($this);
+        $collection = PropertyTypesCollection::fromObject($this);
 
         $reflection = new ReflectionClass($this);
 

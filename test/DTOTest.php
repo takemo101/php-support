@@ -4,7 +4,7 @@ namespace Test;
 
 use PHPUnit\Framework\TestCase;
 use Takemo101\PHPSupport\DTO\{
-    AbstractDTO,
+    AbstractObject,
     AccessGetter,
     AccessSetter,
     TypeHelper,
@@ -93,7 +93,7 @@ class DTOTest extends TestCase
     }
 }
 
-class DTO extends AbstractDTO implements Faker
+class DTO extends AbstractObject implements Faker
 {
     use AccessGetter, AccessSetter;
 

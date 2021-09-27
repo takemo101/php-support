@@ -23,7 +23,7 @@ final class PropertyFlipAliasesCache
      * @param array $aliases
      * @return void
      */
-    public static function cache(AbstractDTO $dto)
+    public static function cache(AbstractObject $dto)
     {
         $class = get_class($dto);
         self::$cache[$class] = array_flip($dto->propertyAliases());
@@ -35,7 +35,7 @@ final class PropertyFlipAliasesCache
      * @param string $class
      * @return array|null
      */
-    public static function find(AbstractDTO $dto): array
+    public static function find(AbstractObject $dto): array
     {
         $class = get_class($dto);
         return self::$cache[$class] ?? null;
@@ -44,10 +44,10 @@ final class PropertyFlipAliasesCache
     /**
      * キャッシュがあるか
      *
-     * @param AbstractDTO $dto
+     * @param AbstractObject $dto
      * @return boolean
      */
-    public static function has(AbstractDTO $dto): bool
+    public static function has(AbstractObject $dto): bool
     {
         $class = get_class($dto);
         return isset(self::$cache[$class]);

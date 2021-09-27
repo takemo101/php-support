@@ -57,12 +57,12 @@ final class TypeHelper
     /**
      * DTOのプロパティ変換
      *
-     * @param AbstractDTO $dto
+     * @param AbstractObject $dto
      * @param string $name
      * @param mixed $value
      * @return mixed
      */
-    public static function convert(AbstractDTO $dto, string $name, $value)
+    public static function convert(AbstractObject $dto, string $name, $value)
     {
         $converters = $dto->propertyConverters();
 

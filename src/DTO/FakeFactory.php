@@ -12,12 +12,12 @@ final class FakeFactory
      *
      * @param string $class
      * @throws InvalidArgumentException
-     * @return AbstractDTO
+     * @return AbstractObject
      */
-    public static function make(string $class): AbstractDTO
+    public static function make(string $class): AbstractObject
     {
         $dto = new $class;
-        return self::makeByDTO($dto);
+        return self::makeByObject($dto);
     }
 
     /**
@@ -25,9 +25,9 @@ final class FakeFactory
      *
      * @param string $class
      * @throws InvalidArgumentException
-     * @return AbstractDTO
+     * @return AbstractObject
      */
-    public static function makeByDTO(AbstractDTO $dto): AbstractDTO
+    public static function makeByObject(AbstractObject $dto): AbstractObject
     {
         if (!($dto instanceof Faker)) {
             throw new InvalidArgumentException("Faker is not implemented");

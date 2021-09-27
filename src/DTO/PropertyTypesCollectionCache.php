@@ -25,7 +25,7 @@ final class PropertyTypesCollectionCache
      * @param PropertyTypesCollection $collection
      * @return void
      */
-    public static function cache(AbstractDTO $dto, PropertyTypesCollection $collection)
+    public static function cache(AbstractObject $dto, PropertyTypesCollection $collection)
     {
         $class = get_class($dto);
         self::$cache[$class] = $collection;
@@ -37,7 +37,7 @@ final class PropertyTypesCollectionCache
      * @param string $class
      * @return PropertyTypesCollection|null
      */
-    public static function find(AbstractDTO $dto): PropertyTypesCollection
+    public static function find(AbstractObject $dto): PropertyTypesCollection
     {
         $class = get_class($dto);
         return self::$cache[$class] ?? null;
@@ -46,10 +46,10 @@ final class PropertyTypesCollectionCache
     /**
      * キャッシュがあるか
      *
-     * @param AbstractDTO $dto
+     * @param AbstractObject $dto
      * @return boolean
      */
-    public static function has(AbstractDTO $dto): bool
+    public static function has(AbstractObject $dto): bool
     {
         $class = get_class($dto);
         return isset(self::$cache[$class]);

@@ -14,7 +14,7 @@ trait AccessGetter
     public function __get(string $name)
     {
         // プロパティタイプコレクションの生成
-        $collection = PropertyTypesCollection::fromDTO($this);
+        $collection = PropertyTypesCollection::fromObject($this);
 
         $aliases = PropertyFlipAliasesCache::find($this);
         $alias = $aliases[$name] ?? $name;

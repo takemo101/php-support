@@ -43,12 +43,12 @@ final class PropertyTypesCollection extends AbstractTypeCollection
     }
 
     /**
-     * AbstractDTOからcollectionを生成する
+     * AbstractObjectからcollectionを生成する
      *
-     * @param AbstractDTO $dto
+     * @param AbstractObject $dto
      * @return self
      */
-    public static function fromDTO(AbstractDTO $dto): self
+    public static function fromObject(AbstractObject $dto): self
     {
         if (!PropertyTypesCollectionCache::has($dto)) {
             // キャッシュにコレクションがなければ生成処理をする
