@@ -98,6 +98,23 @@ interface LocalSystem
     public function symlink(string $target, string $link): bool;
 
     /**
+     * シンボリックリンクのリンク先を取得
+     *
+     * @param string $path
+     * @throws LocalSystemException
+     * @return null|string
+     */
+    public function readlink(string $path): ?string;
+
+    /**
+     * 正規化されたパスを返す
+     *
+     * @param string $path
+     * @return string
+     */
+    public function realpath(string $path): string;
+
+    /**
      * ファイルサイズ
      *
      * @param string $path
