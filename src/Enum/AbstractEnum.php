@@ -173,6 +173,17 @@ abstract class AbstractEnum implements JsonSerializable
     }
 
     /**
+     * Enumの値が定義した定数に含まれるかの真偽値を返す
+     *
+     * @param mixed $enum
+     * @return boolean
+     */
+    public static function in($value): bool
+    {
+        return in_array($value, static::asArray());
+    }
+
+    /**
      * 定数名 => 値 の配列を返す
      *
      * @return array

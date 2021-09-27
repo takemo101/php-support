@@ -2,17 +2,15 @@
 
 namespace Takemo101\PHPSupport\DTO;
 
-use Takemo101\PHPSupport\Collection\AbstractTypeCollection;
-
 /**
- * プロパティタイプコレクションのキャッシュ
+ * DTOのaliasesをarray_filpで逆転したものをキャッシュ
  */
-final class PropertyTypesCollectionCache
+final class PropertyFlipAliasesCache
 {
     /**
      * cache
      *
-     * @var array<PropertyTypesCollection>
+     * @var array<array>
      */
     private static $cache = [
         //
@@ -22,22 +20,22 @@ final class PropertyTypesCollectionCache
      * キャッシュする
      *
      * @param string $class
-     * @param PropertyTypesCollection $collection
+     * @param array $aliases
      * @return void
      */
-    public static function cache(AbstractObject $dto, PropertyTypesCollection $collection)
+    public static function cache(AbstractObject $dto)
     {
         $class = get_class($dto);
-        self::$cache[$class] = $collection;
+        self::$cache[$class] = array_flip($dto->propertyAliases());
     }
 
     /**
      * キャッシュを取得
      *
      * @param string $class
-     * @return PropertyTypesCollection|null
+     * @return array|null
      */
-    public static function find(AbstractObject $dto): PropertyTypesCollection
+    public static function find(AbstractObject $dto): array
     {
         $class = get_class($dto);
         return self::$cache[$class] ?? null;
