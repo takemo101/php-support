@@ -75,8 +75,7 @@ class EventDispatcher
     /**
      * イベントを監視（複数）
      *
-     * @param string $event
-     * @param string|array $listener
+     * @param array $listens
      * @return self
      */
     public function listens(array $listens): self

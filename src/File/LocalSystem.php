@@ -370,10 +370,10 @@ class LocalSystem implements Contract
 
         foreach ($paths as $target) {
             if ($this->isDirectory($target)) {
-                return $this->deleteDirectory($target);
-            }
-
-            if (!$this->delete($target)) {
+                if (!$this->deleteDirectory($target, $keep)) {
+                    return false;
+                }
+            } else if (!$this->delete($target)) {
                 return false;
             }
         }

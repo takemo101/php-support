@@ -5,6 +5,7 @@ namespace Takemo101\PHPSupport\Config;
 use Takemo101\PHPSupport\{
     Path\Path,
     Arr\Arr,
+    File\System,
 };
 use ArrayAccess;
 
@@ -116,7 +117,7 @@ class Repository implements ArrayAccess
     {
         $namespace = $this->namespaceString($namespace);
         $ext = self::ConfigExt;
-        $paths = glob(Path::join($directory, "*{$ext}"));
+        $paths = System::glob(Path::join($directory, "*{$ext}"));
 
         foreach ($paths as $path) {
             $key = $this->keyStringByPath($path);

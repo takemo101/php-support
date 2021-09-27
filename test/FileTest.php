@@ -1,11 +1,12 @@
 <?php
 
-
 namespace Test;
 
 use PHPUnit\Framework\TestCase;
-use Takemo101\PHPSupport\File\System;
-use Takemo101\PHPSupport\Path\Path;
+use Takemo101\PHPSupport\{
+    File\System,
+    Path\Path,
+};
 
 /**
  * file test
