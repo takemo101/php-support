@@ -149,6 +149,33 @@ class LocalSystem implements Contract
     }
 
     /**
+     * シンボリックリンクのリンク先を取得
+     *
+     * @param string $path
+     * @throws LocalSystemException
+     * @return null|string
+     */
+    public function readlink(string $path): ?string
+    {
+        if ($this->exists($path) && $this->isLink($path)) {
+            return readlink($path);
+        }
+
+        throw new LocalSystemException("does not exist or link at path [{$path}]");
+    }
+
+    /**
+     * 正規化されたパスを返す
+     *
+     * @param string $path
+     * @return string
+     */
+    public function realpath(string $path): string
+    {
+        return realpath($path);
+    }
+
+    /**
      * ファイルサイズ
      *
      * @param string $path

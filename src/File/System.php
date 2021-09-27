@@ -149,6 +149,29 @@ final class System
     }
 
     /**
+     * シンボリックリンクのリンク先を取得
+     *
+     * @param string $path
+     * @throws LocalSystemException
+     * @return null|string
+     */
+    public static function readlink(string $path): ?string
+    {
+        return self::instance()->readlink($path);
+    }
+
+    /**
+     * 正規化されたパスを返す
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function realpath(string $path): string
+    {
+        return self::instance()->realpath($path);
+    }
+
+    /**
      * ファイルサイズ
      *
      * @param string $path

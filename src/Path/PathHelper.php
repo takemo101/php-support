@@ -46,6 +46,19 @@ class PathHelper
     }
 
     /**
+     * パスを結合して正規化されたパスを返す
+     *
+     * @param string ...$args
+     * @return string
+     */
+    public function real(string ...$args): string
+    {
+        return realpath(
+            $this->join(...$args)
+        );
+    }
+
+    /**
      * パスを各階層ごとの配列に分離
      *
      * @param string $path

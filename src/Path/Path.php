@@ -19,6 +19,17 @@ final class Path
     }
 
     /**
+     * パスを結合して正規化されたパスを返す
+     *
+     * @param string ...$args
+     * @return string
+     */
+    public static function real(string ...$args): string
+    {
+        return self::createHelper()->real(...$args);
+    }
+
+    /**
      * パスを各階層ごとの配列に分離
      *
      * @param string $path
