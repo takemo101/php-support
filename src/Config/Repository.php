@@ -6,13 +6,14 @@ use Takemo101\PHPSupport\{
     Path\Path,
     Arr\Arr,
     File\System,
+    Contract\Config\Repository as Contract,
 };
 use ArrayAccess;
 
 /**
  * config repository
  */
-class Repository implements ArrayAccess
+class Repository implements Contract, ArrayAccess
 {
     /**
      * @var string

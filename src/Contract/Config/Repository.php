@@ -9,6 +9,17 @@ namespace Takemo101\PHPSupport\Contract\Config;
 interface Repository
 {
     /**
+     * キーを指定してコンフィグに対して色々な値を設定する
+     * configに設定できるものはcallableかコンフィグファイルへのパスか配列など
+     *
+     * @param string $key
+     * @param string|callable $config
+     * @param string|null $namespace
+     * @return mixed
+     */
+    public function loadBy(string $key, string|callable $config, ?string $namespace = null);
+
+    /**
      * ディレクトリーからコンフィグを設定する
      *
      * @param string $directory

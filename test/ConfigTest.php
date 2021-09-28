@@ -3,7 +3,10 @@
 namespace Test;
 
 use PHPUnit\Framework\TestCase;
-use Takemo101\PHPSupport\Config\Config;
+use Takemo101\PHPSupport\Config\{
+    Config,
+    Repository,
+};
 use Takemo101\PHPSupport\Path\Path;
 
 /**
@@ -13,10 +16,14 @@ class ConfigTest extends TestCase
 {
     protected function setUp(): void
     {
-        Config::instance(Path::join(
-            __DIR__,
-            'Config'
-        ));
+        Config::setRepository(
+            new Repository(
+                Path::join(
+                    __DIR__,
+                    'Config'
+                )
+            )
+        );
     }
 
     public function test__Config__load__ok()
