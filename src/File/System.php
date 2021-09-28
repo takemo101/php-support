@@ -17,6 +17,17 @@ final class System
     protected static $system = null;
 
     /**
+     * シングルトンインスタンスをセットする
+     *
+     * @param Contract $system
+     * @return void
+     */
+    public static function setLocalSystem(Contract $system)
+    {
+        self::$system = $system;
+    }
+
+    /**
      * singleton instance
      *
      * @return Contract

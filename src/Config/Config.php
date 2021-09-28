@@ -2,6 +2,8 @@
 
 namespace Takemo101\PHPSupport\Config;
 
+use Takemo101\PHPSupport\Contract\Config\Repository as Contract;
+
 /**
  * config helper
  */
@@ -15,15 +17,25 @@ final class Config
     protected static $repository = null;
 
     /**
+     * シングルトンインスタンスをセットする
+     *
+     * @param Contract $repository
+     * @return void
+     */
+    public static function setRepository(Contract $repository)
+    {
+        self::$repository = $repository;
+    }
+
+    /**
      * singleton instance
      *
-     * @param string|null $directory
-     * @return Repository
+     * @return Contract
      */
-    public static function instance(?string $directory = null): Repository
+    public static function instance(): Contract
     {
         if (!self::$repository) {
-            self::$repository = new Repository($directory);
+            self::$repository = new Repository();
         }
 
         return self::$repository;
@@ -36,9 +48,9 @@ final class Config
      * @param string $key
      * @param string|callable $config
      * @param string|null $namespace
-     * @return Repository
+     * @return Contract
      */
-    public static function loadBy(string $key, string|callable $config, ?string $namespace = null): Repository
+    public static function loadBy(string $key, string|callable $config, ?string $namespace = null): Contract
     {
         return self::instance()->loadBy($key, $config, $namespace);
     }
@@ -48,9 +60,9 @@ final class Config
      *
      * @param string $directory
      * @param string|null $namespace
-     * @return Repository
+     * @return Contract
      */
-    public static function load(string $directory, ?string $namespace = null): Repository
+    public static function load(string $directory, ?string $namespace = null): Contract
     {
         return self::instance()->load($directory, $namespace);
     }
@@ -60,9 +72,9 @@ final class Config
      *
      * @param string $key
      * @param mixed $value
-     * @return Repository
+     * @return Contract
      */
-    public static function merge(string $key, $value): Repository
+    public static function merge(string $key, $value): Contract
     {
         return self::instance()->merge($key, $value);
     }
@@ -84,9 +96,9 @@ final class Config
      *
      * @param string $key
      * @param mixed $value
-     * @return Repository
+     * @return Contract
      */
-    public static function set(string $key, $value): Repository
+    public static function set(string $key, $value): Contract
     {
         return self::instance()->set($key, $value);
     }
@@ -97,7 +109,7 @@ final class Config
      * @param string $key
      * @return boolean
      */
-    public static function has($key): bool
+    public static function has(string $key): bool
     {
         return self::instance()->has($key);
     }
@@ -108,7 +120,7 @@ final class Config
      * @param string $key
      * @return boolean
      */
-    public static function exists($key): bool
+    public static function exists(string $key): bool
     {
         return self::instance()->exists($key);
     }
