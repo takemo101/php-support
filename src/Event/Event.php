@@ -48,7 +48,7 @@ final class Event
      * @param string|array $listener
      * @return EventDispatcher
      */
-    public function listen(string $event, string|array $listener): EventDispatcher
+    public static function listen(string $event, string|array $listener): EventDispatcher
     {
         return self::instance()->listen($event, $listener);
     }
@@ -59,7 +59,7 @@ final class Event
      * @param array $listens
      * @return EventDispatcher
      */
-    public function listens(array $listens): EventDispatcher
+    public static function listens(array $listens): EventDispatcher
     {
         return self::instance()->listens($listens);
     }
@@ -70,7 +70,7 @@ final class Event
      * @param object $event
      * @return EventDispatcher
      */
-    public function notify(object $event): EventDispatcher
+    public static function notify(object $event): EventDispatcher
     {
         return self::instance()->notify($event);
     }
@@ -81,7 +81,7 @@ final class Event
      * @param Contract $resolver
      * @return EventDispatcher
      */
-    public function setListenerResolver(Contract $resolver): EventDispatcher
+    public static function setListenerResolver(Contract $resolver): EventDispatcher
     {
         return self::instance()->setListenerResolver($resolver);
     }
