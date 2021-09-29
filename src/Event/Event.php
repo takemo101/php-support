@@ -3,18 +3,31 @@
 namespace Takemo101\PHPSupport\Event;
 
 use Takemo101\PHPSupport\Contract\Event\ListenerResolver as Contract;
+use Takemo101\PHPSupport\Facade\AbstractFacade;
 
 /**
  * event helper
+ *
+ * @method static EventDispatcher listen(string $event, string|array $listener)
+ * @method static EventDispatcher listens(array $listens)
+ * @method static EventDispatcher listen(string $event, string|array $listener)
+ * @method static EventDispatcher notify(object $event)
+ * @method static EventDispatcher setListenerResolver(Contract $resolver):
+ *
+ * @see \Takemo101\PHPSupport\Event\EventDispatcher
  */
-final class Event
+final class Event extends AbstractFacade
 {
     /**
-     * event dispatcher
+     * facade accesser
      *
-     * @var EventDispatcher|null
+     * @throws RuntimeException
+     * @return string|object
      */
-    protected static $dispatcher = null;
+    protected static function accessor(): string|object
+    {
+        return EventDispatcher::class;
+    }
 
     /**
      * シングルトンインスタンスをセットする
@@ -24,65 +37,8 @@ final class Event
      */
     public static function setDispatcher(EventDispatcher $dispatcher)
     {
-        self::$dispatcher = $dispatcher;
-    }
-
-    /**
-     * singleton instance
-     *
-     * @return EventDispatcher
-     */
-    public static function instance(): EventDispatcher
-    {
-        if (!self::$dispatcher) {
-            self::$dispatcher = new EventDispatcher();
-        }
-
-        return self::$dispatcher;
-    }
-
-    /**
-     * イベントを監視
-     *
-     * @param string $event
-     * @param string|array $listener
-     * @return EventDispatcher
-     */
-    public static function listen(string $event, string|array $listener): EventDispatcher
-    {
-        return self::instance()->listen($event, $listener);
-    }
-
-    /**
-     * イベントを監視（複数）
-     *
-     * @param array $listens
-     * @return EventDispatcher
-     */
-    public static function listens(array $listens): EventDispatcher
-    {
-        return self::instance()->listens($listens);
-    }
-
-    /**
-     * イベント通知
-     *
-     * @param object $event
-     * @return EventDispatcher
-     */
-    public static function notify(object $event): EventDispatcher
-    {
-        return self::instance()->notify($event);
-    }
-
-    /**
-     * リスナー解決クラスをセット
-     *
-     * @param Contract $resolver
-     * @return EventDispatcher
-     */
-    public static function setListenerResolver(Contract $resolver): EventDispatcher
-    {
-        return self::instance()->setListenerResolver($resolver);
+        self::binding(function ($c) use ($dispatcher) {
+            return $dispatcher;
+        });
     }
 }

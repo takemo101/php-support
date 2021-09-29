@@ -3,18 +3,33 @@
 namespace Takemo101\PHPSupport\Config;
 
 use Takemo101\PHPSupport\Contract\Config\Repository as Contract;
+use Takemo101\PHPSupport\Facade\AbstractFacade;
 
 /**
  * config helper
+ *
+ * @method static Contract loadBy(string $key, string|callable $config, ?string $namespace = null)
+ * @method static Contract load(string $directory, ?string $namespace = null)
+ * @method static Contract merge(string $key, $value)
+ * @method static mixed get(string $key, $default = null)
+ * @method static Contract set(string $key, $value)
+ * @method static boolean has(string $key)
+ * @method static boolean exists(string $key)
+ *
+ * @see \Takemo101\PHPSupport\Contract\Config\Repository
  */
-final class Config
+final class Config extends AbstractFacade
 {
     /**
-     * config repository
+     * facade accesser
      *
-     * @var Repository|null
+     * @throws RuntimeException
+     * @return string|object
      */
-    protected static $repository = null;
+    protected static function accessor(): string|object
+    {
+        return Contract::class;
+    }
 
     /**
      * シングルトンインスタンスをセットする
@@ -24,104 +39,8 @@ final class Config
      */
     public static function setRepository(Contract $repository)
     {
-        self::$repository = $repository;
-    }
-
-    /**
-     * singleton instance
-     *
-     * @return Contract
-     */
-    public static function instance(): Contract
-    {
-        if (!self::$repository) {
-            self::$repository = new Repository();
-        }
-
-        return self::$repository;
-    }
-
-    /**
-     * キーを指定してコンフィグに対して色々な値を設定する
-     * configに設定できるものはcallableかコンフィグファイルへのパスか配列など
-     *
-     * @param string $key
-     * @param string|callable $config
-     * @param string|null $namespace
-     * @return Contract
-     */
-    public static function loadBy(string $key, string|callable $config, ?string $namespace = null): Contract
-    {
-        return self::instance()->loadBy($key, $config, $namespace);
-    }
-
-    /**
-     * ディレクトリーからコンフィグを設定する
-     *
-     * @param string $directory
-     * @param string|null $namespace
-     * @return Contract
-     */
-    public static function load(string $directory, ?string $namespace = null): Contract
-    {
-        return self::instance()->load($directory, $namespace);
-    }
-
-    /**
-     * コンフィグデータをマージ
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return Contract
-     */
-    public static function merge(string $key, $value): Contract
-    {
-        return self::instance()->merge($key, $value);
-    }
-
-    /**
-     * コンフィグデータを取得
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return mixed
-     */
-    public static function get(string $key, $default = null)
-    {
-        return self::instance()->get($key, $default);
-    }
-
-    /**
-     * コンフィグデータをセット
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return Contract
-     */
-    public static function set(string $key, $value): Contract
-    {
-        return self::instance()->set($key, $value);
-    }
-
-    /**
-     * コンフィグデータの存在チェック
-     *
-     * @param string $key
-     * @return boolean
-     */
-    public static function has(string $key): bool
-    {
-        return self::instance()->has($key);
-    }
-
-    /**
-     * コンフィグファイルの有無
-     *
-     * @param string $key
-     * @return boolean
-     */
-    public static function exists(string $key): bool
-    {
-        return self::instance()->exists($key);
+        self::binding(function ($c) use ($repository) {
+            return $repository;
+        });
     }
 }
