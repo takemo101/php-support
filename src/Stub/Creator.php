@@ -24,7 +24,7 @@ class Creator
      * stub path map
      * 出力元stubファイルパス => 出力先パス配列
      *
-     * @var array<array>
+     * @var array[]
      */
     private $map = [];
 

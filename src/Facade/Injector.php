@@ -103,10 +103,11 @@ final class Injector
      * クラスまたはラベル名から依存性を解決した値を取得する
      *
      * @param string $label
-     * @return mixed
+     * @param array $options
+     * @return Contract
      */
-    public static function make(string $label)
+    public static function make(string $label, array $options = [])
     {
-        return self::instance()->make($label);
+        return self::instance()->make($label, $options);
     }
 }

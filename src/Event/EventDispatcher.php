@@ -24,7 +24,7 @@ class EventDispatcher
     /**
      * event listener map
      *
-     * @var array<array>
+     * @var array[]
      */
     private $map = [];
 
@@ -38,7 +38,7 @@ class EventDispatcher
     /**
      * イベントマップの取得
      *
-     * @return array<string>
+     * @return string[]
      */
     public function getEventMap(object $event): array
     {

@@ -11,7 +11,7 @@ use Takemo101\PHPSupport\Contract\DTO\PropertyType;
 final class PropertyTypes
 {
     /**
-     * @var array<PropertyType>
+     * @var PropertyType[]
      */
     private $types = [];
 
@@ -106,7 +106,7 @@ final class PropertyTypes
     /**
      * プロパティタイプリスト
      *
-     * @return array<PropertyType>
+     * @return PropertyType[]
      */
     public function getTypes(): array
     {

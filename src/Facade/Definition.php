@@ -36,29 +36,33 @@ final class Definition
      * 解決
      *
      * @param Contract $container
+     * @param Resolvers $resolvers
+     * @param array $options
      * @return mixed
      */
-    public function resolve(Contract $container)
+    public function resolve(Contract $container, Resolvers $resolvers, array $options = [])
     {
         if ($this->singleton) {
             if (is_null($this->instance)) {
-                $this->instance = $this->build($container);
+                $this->instance = $this->build($container, $resolvers, $options);
             }
 
             return $this->instance;
         }
 
-        return $this->build($container);
+        return $this->build($container, $resolvers, $options);
     }
 
     /**
      * インスタンス生成
      *
      * @param Contract $container
+     * @param Resolvers $resolvers
+     * @param array $options
      * @throws Error
      * @return mixed
      */
-    private function build(Contract $container)
+    private function build(Contract $container, Resolvers $resolvers, array $options = [])
     {
         if ($this->callback instanceof Closure) {
             $result = ($this->callback)($container);
@@ -67,7 +71,7 @@ final class Definition
                 throw new Error('build type error');
             }
         } else {
-            $result = ClassNameResolver::toResolve($this->callback, $container);
+            $result = $resolvers->resolve($container, $this->callback, $options);
         }
 
         return $result;

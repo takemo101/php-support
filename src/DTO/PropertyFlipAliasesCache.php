@@ -10,7 +10,7 @@ final class PropertyFlipAliasesCache
     /**
      * cache
      *
-     * @var array<array>
+     * @var array[]
      */
     private static $cache = [
         //

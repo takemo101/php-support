@@ -5,6 +5,10 @@ namespace Takemo101\PHPSupport\Facade;
 use Closure;
 use LogicException;
 use Takemo101\PHPSupport\Contract\Facade\Container as Contract;
+use Takemo101\PHPSupport\Facade\Resolver\{
+    DefaultResolver,
+    ArgumentNameResolver,
+};
 
 /**
  * facade inject container class
@@ -15,7 +19,7 @@ class Container implements Contract
     /**
      * injection bind map
      *
-     * @var array<Definition>
+     * @var Definition[]
      */
     protected $binds = [];
 
@@ -25,6 +29,22 @@ class Container implements Contract
      * @var array
      */
     protected $aliases = [];
+
+    /**
+     * class constructor argument resolver
+     *
+     * @var Resolvers
+     */
+    protected $resolvers;
+
+    public function __construct(
+        ?Resolvers $resolvers = null
+    ) {
+        $this->resolvers = $resolvers ?? new Resolvers([
+            new DefaultResolver,
+            new ArgumentNameResolver,
+        ]);
+    }
 
     /**
      * 別名の設定
@@ -104,9 +124,10 @@ class Container implements Contract
      * クラスまたはラベル名から依存性を解決した値を取得する
      *
      * @param string $label
+     * @param array $options
      * @return mixed
      */
-    public function make(string $label)
+    public function make(string $label, array $options = [])
     {
         if (!isset($this->binds[$label])) {
             if (isset($this->aliases[$label])) {
@@ -124,6 +145,6 @@ class Container implements Contract
 
         $definition = $this->binds[$label];
 
-        return $definition->resolve($this);
+        return $definition->resolve($this, $this->resolvers, $options);
     }
 }

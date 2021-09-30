@@ -12,7 +12,7 @@ final class PropertyTypesCollectionCache
     /**
      * cache
      *
-     * @var array<PropertyTypesCollection>
+     * @var PropertyTypesCollection[]
      */
     private static $cache = [
         //

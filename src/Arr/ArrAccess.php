@@ -30,7 +30,7 @@ class ArrAccess implements Iteratable, JsonSerializable
      * dot 記法から最初のキーと残りのキーを返す
      *
      * @param string $key
-     * @return array<string>
+     * @return string[]
      */
     public function firstDotKey(string $key): array
     {
