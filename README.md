@@ -7,6 +7,21 @@ PHP で Package 開発を行うのに必要な実装サポートツールをま�
 
 配列操作をサポート
 
+example:
+
+```
+use Takemo101\PHPSupport\Arr\Arr;
+
+// return string 'hello'
+$c = Arr::get([
+    'a' => [
+        'b' => [
+            'c' => 'hello',
+        ],
+    ],
+];, 'a.b.c');
+```
+
 ## Bootstrap
 
 パッケージの初期処理をサポート
@@ -15,9 +30,39 @@ PHP で Package 開発を行うのに必要な実装サポートツールをま�
 
 コレクション実装をサポート
 
+example:
+
+```
+use Takemo101\PHPSupport\Collection\ArrayCollection;
+
+$collection = new ArrayCollection([
+    'a',
+    'b',
+    'c',
+]);
+$collection->add('d');
+
+foreach ($collection as $item) {
+    //
+}
+```
+
 ## Enum
 
 列挙型の実装をサポート
+
+example:
+
+```
+use Takemo101\PHPSupport\Enum\AbstractEnum;
+
+class Enum extends AbstractEnum
+{
+    const One = 'one';
+    const Two = 'two';
+    const Three = 'three';
+}
+```
 
 ## Event
 
@@ -30,6 +75,15 @@ PHP で Package 開発を行うのに必要な実装サポートツールをま�
 ## Facade
 
 ファザードの実装をサポート（シンプルな DI コンテナ含む）
+
+container example:
+
+```
+Injector::bind(ExampleService::class);
+
+/** @var ExampleService $service */
+$service = Injector::make(ExampleService::class);
+```
 
 ## File（利用非推奨）
 

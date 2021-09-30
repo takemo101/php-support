@@ -36,11 +36,11 @@ final class Definition
      * 解決
      *
      * @param Contract $container
-     * @param Resolvers $resolvers
+     * @param ArgumentResolvers $resolvers
      * @param array $options
      * @return mixed
      */
-    public function resolve(Contract $container, Resolvers $resolvers, array $options = [])
+    public function resolve(Contract $container, ArgumentResolvers $resolvers, array $options = [])
     {
         if ($this->singleton) {
             if (is_null($this->instance)) {
@@ -57,12 +57,12 @@ final class Definition
      * インスタンス生成
      *
      * @param Contract $container
-     * @param Resolvers $resolvers
+     * @param ArgumentResolvers $resolvers
      * @param array $options
      * @throws Error
      * @return mixed
      */
-    private function build(Contract $container, Resolvers $resolvers, array $options = [])
+    private function build(Contract $container, ArgumentResolvers $resolvers, array $options = [])
     {
         if ($this->callback instanceof Closure) {
             $result = ($this->callback)($container);

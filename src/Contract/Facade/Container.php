@@ -59,4 +59,13 @@ interface Container
      * @return mixed
      */
     public function make(string $label);
+
+    /**
+     * callableから依存性を解決した値を取得する
+     *
+     * @param callable $callable
+     * @param array $options
+     * @return mixed
+     */
+    public function call(callable $callable, array $options = []);
 }

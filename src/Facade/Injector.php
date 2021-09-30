@@ -110,4 +110,16 @@ final class Injector
     {
         return self::instance()->make($label, $options);
     }
+
+    /**
+     * callableから依存性を解決した値を取得する
+     *
+     * @param callable $callable
+     * @param array $options
+     * @return mixed
+     */
+    public static function call(callable $callable, array $options = [])
+    {
+        return self::instance()->call($callable, $options);
+    }
 }

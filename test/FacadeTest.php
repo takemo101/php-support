@@ -16,6 +16,9 @@ class FacadeTest extends TestCase
     public function test__Container__bind_string__ok()
     {
         Injector::bind(FacadeTargetA::class);
+        /**
+         * @var FacadeTargetA $a
+         */
         $a = Injector::make(FacadeTargetA::class);
 
         $this->assertEquals(get_class($a), FacadeTargetA::class);
@@ -24,10 +27,15 @@ class FacadeTest extends TestCase
         $a->setA($data);
 
         $a = Injector::make(FacadeTargetA::class);
-
+        /**
+         * @var FacadeTargetA $a
+         */
         $this->assertNotEquals($a->getA(), $data);
 
         Injector::singleton(FacadeTargetB::class);
+        /**
+         * @var FacadeTargetB $b
+         */
         $b = Injector::make(FacadeTargetB::class);
 
         $this->assertEquals(get_class($b), FacadeTargetB::class);
@@ -35,6 +43,9 @@ class FacadeTest extends TestCase
         $data = 'g';
         $b->setB($data);
 
+        /**
+         * @var FacadeTargetB $b
+         */
         $b = Injector::make(FacadeTargetB::class);
 
         $this->assertEquals($b->getB(), $data);
@@ -42,6 +53,9 @@ class FacadeTest extends TestCase
         $alias = 'b';
         Injector::alias(FacadeTargetB::class, $alias);
 
+        /**
+         * @var FacadeTargetB $b
+         */
         $b = Injector::make($alias);
 
         $this->assertEquals(get_class($b), FacadeTargetB::class);
@@ -50,12 +64,16 @@ class FacadeTest extends TestCase
         $this->assertTrue(Injector::has(FacadeTargetB::class));
         $this->assertTrue(Injector::has($alias));
 
+        /**
+         * @var FacadeTargetC $c
+         */
         $c = Injector::make(FacadeTargetC::class);
         $this->assertEquals(get_class($c), FacadeTargetC::class);
         $this->assertTrue(Injector::has(FacadeTargetC::class));
 
 
         $data = 'hello';
+
         /**
          * @var FacadeTargetC $c
          */
@@ -73,6 +91,9 @@ class FacadeTest extends TestCase
         Injector::bind(FacadeTargetA::class, function ($c) {
             return new FacadeTargetA;
         });
+        /**
+         * @var FacadeTargetA $a
+         */
         $a = Injector::make(FacadeTargetA::class);
 
         $this->assertEquals(get_class($a), FacadeTargetA::class);
@@ -80,6 +101,9 @@ class FacadeTest extends TestCase
         $data = 'c';
         $a->setA($data);
 
+        /**
+         * @var FacadeTargetA $a
+         */
         $a = Injector::make(FacadeTargetA::class);
 
         $this->assertNotEquals($a->getA(), $data);
@@ -88,6 +112,9 @@ class FacadeTest extends TestCase
             return new FacadeTargetB;
         });
 
+        /**
+         * @var FacadeTargetB $b
+         */
         $b = Injector::make(FacadeTargetB::class);
 
         $this->assertEquals(get_class($b), FacadeTargetB::class);
@@ -95,6 +122,9 @@ class FacadeTest extends TestCase
         $data = 'g';
         $b->setB($data);
 
+        /**
+         * @var FacadeTargetB $b
+         */
         $b = Injector::make(FacadeTargetB::class);
 
         $this->assertEquals($b->getB(), $data);
@@ -102,6 +132,9 @@ class FacadeTest extends TestCase
         $alias = 'b';
         Injector::alias(FacadeTargetB::class, $alias);
 
+        /**
+         * @var FacadeTargetB $b
+         */
         $b = Injector::make($alias);
 
         $this->assertEquals(get_class($b), FacadeTargetB::class);
@@ -114,6 +147,38 @@ class FacadeTest extends TestCase
 
         $this->assertTrue(!Injector::has(FacadeTargetB::class));
         $this->assertTrue(!Injector::has($alias));
+    }
+
+    public function test__Container__call__ok()
+    {
+        Injector::bind(FacadeTargetA::class);
+        Injector::singleton(FacadeTargetB::class);
+
+        /**
+         * @var FacadeTargetB $b
+         */
+        $b = Injector::make(FacadeTargetB::class);
+        $data = 'inject b';
+        $b->setB($data);
+
+        /**
+         * @var FacadeTargetA $a
+         */
+        $a = Injector::make(FacadeTargetA::class);
+
+        Injector::call([$a, 'setB']);
+
+        $this->assertEquals($a->getA(), $data);
+        $this->assertEquals(Injector::call($a), $data);
+        $this->assertEquals(Injector::call(function (FacadeTargetB $b) {
+            return $b->getB();
+        }), $data);
+
+        $this->assertEquals(Injector::call(function ($b) {
+            return $b;
+        }, [
+            'b' => $data,
+        ]), $data);
     }
 
     public function test__Facade__method__ok()
@@ -155,6 +220,16 @@ class FacadeTargetA
     }
 
     public function getA()
+    {
+        return $this->a;
+    }
+
+    public function setB(FacadeTargetB $b)
+    {
+        $this->a = $b->getB();
+    }
+
+    public function __invoke()
     {
         return $this->a;
     }

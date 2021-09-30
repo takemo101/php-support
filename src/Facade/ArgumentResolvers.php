@@ -5,6 +5,7 @@ namespace Takemo101\PHPSupport\Facade;
 use InvalidArgumentException;
 use Error;
 use ReflectionClass;
+use ReflectionParameter;
 use ReflectionNamedType;
 use Takemo101\PHPSupport\Contract\Facade\{
     Container as Contract,
@@ -15,7 +16,7 @@ use Takemo101\PHPSupport\Contract\Facade\{
  * argument resolvers
  * クラス名からインスタンスに解決するクラス
  */
-final class Resolvers
+final class ArgumentResolvers
 {
     /**
      * argument resolver
@@ -107,9 +108,27 @@ final class Resolvers
 
         $parameters = $constructor->getParameters();
 
-        $arguments = [];
-
         // コンストラクタの引数をリフレクションパラメータから解決する
+        $arguments = $this->resolveArguments(
+            $container,
+            $parameters,
+            $options
+        );
+
+        return $reflector->newInstanceArgs($arguments);
+    }
+
+    /**
+     * 引数をリフレクションパラメータから解決する
+     *
+     * @param Container $container
+     * @param ReflectionParameter[] $parameters
+     * @param array $options
+     * @return array
+     */
+    public function resolveArguments(Container $container, array $parameters, array $options = []): array
+    {
+        $arguments = [];
         foreach ($this->resolvers as $resolver) {
             $arguments = $resolver->resolve(
                 $container,
@@ -119,6 +138,6 @@ final class Resolvers
             );
         }
 
-        return $reflector->newInstanceArgs($arguments);
+        return $arguments;
     }
 }
