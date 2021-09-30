@@ -26,7 +26,7 @@ class Repository implements Contract, ArrayAccess
     const ConfigExt = '.php';
 
     /**
-     * @var array<array>
+     * @var array[]
      */
     protected $config = [];
 

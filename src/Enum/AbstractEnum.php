@@ -109,7 +109,7 @@ abstract class AbstractEnum implements JsonSerializable
     /**
      * 全てのEnumの定数名を返す
      *
-     * @return array<string>
+     * @return string[]
      */
     public static function keys(): array
     {
@@ -119,7 +119,7 @@ abstract class AbstractEnum implements JsonSerializable
     /**
      * 全てのEnumの値を返す
      *
-     * @return array<string>
+     * @return string[]
      */
     public static function values(): array
     {
@@ -129,7 +129,7 @@ abstract class AbstractEnum implements JsonSerializable
     /**
      * 全てのEnumインスタンスを返す
      *
-     * @return array<static>
+     * @return static[]
      */
     public static function constants()
     {

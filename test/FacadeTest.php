@@ -54,6 +54,14 @@ class FacadeTest extends TestCase
         $this->assertEquals(get_class($c), FacadeTargetC::class);
         $this->assertTrue(Injector::has(FacadeTargetC::class));
 
+
+        $data = 'hello';
+        /**
+         * @var FacadeTargetC $c
+         */
+        $c = Injector::make(FacadeTargetC::class, ['c' => $data]);
+        $this->assertEquals($c->getC(), $data);
+
         Injector::clear();
 
         $this->assertTrue(!Injector::has(FacadeTargetB::class));
@@ -171,7 +179,8 @@ class FacadeTargetC
 {
     public function __construct(
         private FacadeTargetB $b,
-        private FacadeTargetA $a
+        private FacadeTargetA $a,
+        private $c = 'C',
     ) {
         //
     }
@@ -184,6 +193,11 @@ class FacadeTargetC
     public function getA()
     {
         return $this->a;
+    }
+
+    public function getC()
+    {
+        return $this->c;
     }
 }
 

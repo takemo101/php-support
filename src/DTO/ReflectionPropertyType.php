@@ -75,7 +75,7 @@ final class ReflectionPropertyType implements PropertyType
      * リフレクションタイプからインスタンス配列を生成
      *
      * @param ReflectionUnionType|ReflectionNamedType $type
-     * @return array<ReflectionNamedType>
+     * @return ReflectionNamedType[]
      */
     public static function fromReflectionType(ReflectionUnionType|ReflectionNamedType $type): array
     {

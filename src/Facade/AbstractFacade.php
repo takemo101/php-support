@@ -10,7 +10,7 @@ abstract class AbstractFacade
     /**
      * resolve instances
      *
-     * @var array<object>
+     * @var object[]
      */
     protected static $instances = [];
 

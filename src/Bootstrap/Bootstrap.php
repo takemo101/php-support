@@ -10,7 +10,7 @@ use Takemo101\PHPSupport\Contract\Bootstrap\LoaderResolver as Contract;
 class Bootstrap
 {
     /**
-     * @var array<string>
+     * @var string[]
      */
     private $loader = [
         //

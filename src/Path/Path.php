@@ -33,7 +33,7 @@ final class Path
      * パスを各階層ごとの配列に分離
      *
      * @param string $path
-     * @return array<string>
+     * @return string[]
      */
     public static function split(string $path): array
     {

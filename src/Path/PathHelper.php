@@ -62,7 +62,7 @@ class PathHelper
      * パスを各階層ごとの配列に分離
      *
      * @param string $path
-     * @return array<string>
+     * @return string[]
      */
     public function split(string $path): array
     {
@@ -75,7 +75,7 @@ class PathHelper
      * 結合可能な配列に整える
      *
      * @param array $components
-     * @return array<string>
+     * @return string[]
      */
     protected function normalize(array $components): array
     {
