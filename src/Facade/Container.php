@@ -31,16 +31,16 @@ class Container implements Contract
     protected $aliases = [];
 
     /**
-     * class constructor argument resolver
+     * class constructor argument resolvers
      *
-     * @var Resolvers
+     * @var ArgumentResolvers
      */
     protected $resolvers;
 
     public function __construct(
-        ?Resolvers $resolvers = null
+        ?ArgumentResolvers $resolvers = null
     ) {
-        $this->resolvers = $resolvers ?? new Resolvers([
+        $this->resolvers = $resolvers ?? new ArgumentResolvers([
             new DefaultResolver,
             new ArgumentNameResolver,
         ]);
@@ -146,5 +146,22 @@ class Container implements Contract
         $definition = $this->binds[$label];
 
         return $definition->resolve($this, $this->resolvers, $options);
+    }
+
+    /**
+     * callableから依存性を解決した値を取得する
+     *
+     * @param callable $callable
+     * @param array $options
+     * @return mixed
+     */
+    public function call(callable $callable, array $options = [])
+    {
+        return CallableResolversAdapter::toResolve(
+            $this->resolvers,
+            $this,
+            $callable,
+            $options
+        );
     }
 }
