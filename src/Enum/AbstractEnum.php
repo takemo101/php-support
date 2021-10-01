@@ -165,7 +165,7 @@ abstract class AbstractEnum implements JsonSerializable
      * 一致しなかった場合はfalseを返す
      *
      * @param mixed $value
-     * @return string|boolean
+     * @return string|false
      */
     public static function search($value): string|bool
     {

@@ -20,9 +20,7 @@ class EventTest extends TestCase
      */
     public function createEventDispatcher(): EventDispatcher
     {
-        return new EventDispatcher(
-            new ListenerResolver(false)
-        );
+        return new EventDispatcher;
     }
 
     public function test__Event__listen__ok()

@@ -26,7 +26,7 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
      * 追加
      *
      * @param mixed $element
-     * @return self
+     * @return static
      */
     public function add($element)
     {
@@ -52,7 +52,7 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
      *
      * @param mixed $key
      * @param mixed $element
-     * @return self
+     * @return static
      */
     public function set($key, $element)
     {
@@ -112,20 +112,40 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
      * マップ
      *
      * @param callable $callback
-     * @return self
+     * @return static
      */
     public function map(callable $callback)
     {
         return new static(
-            array_map($callback, $this->item)
+            array_map($callback, $this->items)
         );
+    }
+
+    /**
+     * マップ（キーも設定する ver）
+     *
+     * @param callable $callback
+     * @return static
+     */
+    public function mapWithKey(callable $callback)
+    {
+        $result = [];
+        foreach ($this->items as $key => $value) {
+            $assoc = call_user_func_array($callback, [$value, $key]);
+
+            foreach ($assoc as $mapKey => $mapValue) {
+                $result[$mapKey] = $mapValue;
+            }
+        }
+
+        return new static($result);
     }
 
     /**
      * フィルター
      *
      * @param callable $callback
-     * @return self
+     * @return static
      */
     public function filter(callable $callback)
     {
@@ -213,13 +233,64 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
      * 要素を入れ替える
      *
      * @param array $elements
-     * @return self
+     * @return static
      */
     public function replace(array $elements)
     {
         $this->items = $elements;
 
         return $this;
+    }
+
+    /**
+     * マージ
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function merge(array $elements)
+    {
+        $this->items = array_merge($this->items, $elements);
+
+        return $this;
+    }
+
+    /**
+     * 配列の値から新しい配列を生成する
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function combine(array $elements)
+    {
+        $this->items = array_combine($this->items, $elements);
+
+        return $this;
+    }
+
+    /**
+     * 配列を結合する
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function union(array $elements)
+    {
+        $this->items = $this->items + $elements;
+
+        return $this;
+    }
+
+    /**
+     * 値を検索する
+     *
+     * @param mixed $element
+     * @param boolean $strict
+     * @return mixed
+     */
+    public function search($element, bool $strict = true)
+    {
+        return array_search($element, $this->items, $strict);
     }
 
     /**
@@ -232,7 +303,6 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
         return $this->all();
     }
 
-
     /**
      * serialize value.
      *
@@ -241,5 +311,16 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
     public function jsonSerialize()
     {
         return $this->toArray();
+    }
+
+    /**
+     * factory
+     *
+     * @param array $items
+     * @return static
+     */
+    public static function of(array $items): static
+    {
+        return new static($items);
     }
 }

@@ -24,7 +24,7 @@ trait CheckTypeTrait
     }
 
     /**
-     * 設定された要素の方から要素をチェック
+     * 設定された要素の型から要素をチェック
      *
      * @param mixed $element
      * @throws InvalidArgumentException
@@ -35,6 +35,20 @@ trait CheckTypeTrait
         $type = $this->type();
         if (!$this->checkType($type, $element)) {
             throw new InvalidArgumentException("element type not [{$type}]");
+        }
+    }
+
+    /**
+     * 配列要素の型を全てチェック
+     *
+     * @param array $elements
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    protected function checkElements(array $elements)
+    {
+        foreach ($elements as $element) {
+            $this->checkElementType($element);
         }
     }
 

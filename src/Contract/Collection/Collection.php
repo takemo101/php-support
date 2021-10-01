@@ -12,7 +12,7 @@ interface Collection
      * 追加
      *
      * @param mixed $element
-     * @return self
+     * @return static
      */
     public function add($element);
 
@@ -30,7 +30,7 @@ interface Collection
      *
      * @param mixed $key
      * @param mixed $element
-     * @return self
+     * @return static
      */
     public function set($key, $element);
 
@@ -68,15 +68,23 @@ interface Collection
      * マップ
      *
      * @param callable $callback
-     * @return self
+     * @return static
      */
     public function map(callable $callback);
+
+    /**
+     * マップ（キーも設定する ver）
+     *
+     * @param callable $callback
+     * @return static
+     */
+    public function mapWithKey(callable $callback);
 
     /**
      * フィルター
      *
      * @param callable $callback
-     * @return self
+     * @return static
      */
     public function filter(callable $callback);
 
@@ -119,7 +127,40 @@ interface Collection
      * 要素を入れ替える
      *
      * @param array $elements
-     * @return self
+     * @return static
      */
     public function replace(array $elements);
+
+    /**
+     * マージ
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function merge(array $elements);
+
+    /**
+     * 配列の値から新しい配列を生成する
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function combine(array $elements);
+
+    /**
+     * 配列を結合する
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function union(array $elements);
+
+    /**
+     * 値を検索する
+     *
+     * @param mixed $element
+     * @param boolean $strict
+     * @return mixed
+     */
+    public function search($element, bool $strict = true);
 }

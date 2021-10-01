@@ -34,8 +34,8 @@ class ArrAccess implements Iteratable, JsonSerializable
      */
     public function firstDotKey(string $key): array
     {
-        $firstKey = explode(self::DOT_SEPARATOR, $key)[0];
-        $lastKey = ltrim(ltrim($key, $firstKey), self::DOT_SEPARATOR);
+        $firstKey = explode(static::DOT_SEPARATOR, $key)[0];
+        $lastKey = ltrim(ltrim($key, $firstKey), static::DOT_SEPARATOR);
         return [$firstKey, $lastKey];
     }
 
@@ -53,9 +53,9 @@ class ArrAccess implements Iteratable, JsonSerializable
      * ドット記法 => 値 を配列に直す
      *
      * @param array $array
-     * @return self
+     * @return static
      */
-    public function undot(array $array): self
+    public function undot(array $array): static
     {
         foreach ($array as $key => $value) {
             $this->set($key, $value);
@@ -78,7 +78,7 @@ class ArrAccess implements Iteratable, JsonSerializable
         foreach ($array as $key => $value) {
 
             if (is_array($value)) {
-                $result = array_merge($result, $this->dotting($value, $prepend . $key . self::DOT_SEPARATOR));
+                $result = array_merge($result, $this->dotting($value, $prepend . $key . static::DOT_SEPARATOR));
             } else {
                 $result[$prepend . $key] = $value;
             }
@@ -92,12 +92,12 @@ class ArrAccess implements Iteratable, JsonSerializable
      *
      * @param string $key
      * @param mixed $value
-     * @return self
+     * @return static
      */
-    public function set(string $key, $value): self
+    public function set(string $key, $value): static
     {
 
-        $keys = explode(self::DOT_SEPARATOR, $key);
+        $keys = explode(static::DOT_SEPARATOR, $key);
 
         $result = &$this->array;
 
@@ -156,11 +156,11 @@ class ArrAccess implements Iteratable, JsonSerializable
             return $result[$key];
         }
 
-        if (strpos($key, self::DOT_SEPARATOR) === false) {
+        if (strpos($key, static::DOT_SEPARATOR) === false) {
             return $default;
         }
 
-        foreach (explode(self::DOT_SEPARATOR, $key) as $segment) {
+        foreach (explode(static::DOT_SEPARATOR, $key) as $segment) {
             if (!is_array($result) || !array_key_exists($segment, $result)) {
                 return $default;
             }
@@ -200,15 +200,15 @@ class ArrAccess implements Iteratable, JsonSerializable
      * 指定したキーの配列を削除する
      *
      * @param string|array $keys
-     * @return self
+     * @return static
      */
-    public function forget($keys): self
+    public function forget($keys): static
     {
         $result = &$this->array;
 
         foreach ((array)$keys as $key) {
 
-            $parts = explode(self::DOT_SEPARATOR, $key);
+            $parts = explode(static::DOT_SEPARATOR, $key);
 
             while (count($parts) > 1) {
                 $part = array_shift($parts);
@@ -317,9 +317,9 @@ class ArrAccess implements Iteratable, JsonSerializable
      * factory
      *
      * @param array $array
-     * @return self
+     * @return static
      */
-    public static function of(array $array = []): self
+    public static function of(array $array = []): static
     {
         return new static($array);
     }
