@@ -19,7 +19,7 @@ $c = Arr::get([
             'c' => 'hello',
         ],
     ],
-];, 'a.b.c');
+], 'a.b.c');
 ```
 
 ## Bootstrap
@@ -101,3 +101,111 @@ DataTransferObject の実装をサポート
 ## Stub
 
 Stub 生成の実装をサポート
+
+## ViewModel
+
+view へのデータ出力をサポート
+
+view model example:
+
+```
+use Takemo101\PHPSupport\{
+    ViewModel\AbstractModel,
+    Facade\Injector,
+};
+
+
+// view model class
+class Model extends AbstractModel
+{
+    public function __construct(
+        public string $a, // publicプロパティの値は公開される
+        private string $b,
+        private string $c
+    ) {
+        //
+    }
+
+    /**
+     * publicメソッドの値は公開される
+     */
+    public function b()
+    {
+        return $this->b;
+    }
+
+    public function c()
+    {
+        return $this->c;
+    }
+
+    /**
+     * メソッドインジェクションでクラスを注入できる
+     */
+    public function d(ClassD $d)
+    {
+        return $d->getD();
+    }
+
+    /**
+     * 初期値メソッド
+     */
+    public function __data(): array
+    {
+        return [
+            'e' => 'e',
+            'f' => 'f',
+        ];
+    }
+}
+
+// メソッドインジェクションで注入するクラス
+class ClassD
+{
+    public function __construct(private $d)
+    {
+        //
+    }
+
+    public function getD()
+    {
+        return $this->d;
+    }
+
+    public function setD($d)
+    {
+        $this->d = $d;
+    }
+}
+
+// メソッドインジェクションの依存性注入はデフォルトでInjectorが利用できる
+// ReflectionTransformerにCallableResolverをセットすることでカスタマイズできる
+Injector::singleton(ClassD::class, function ($c) {
+    return new ClassD('d');
+});
+
+$model = Model::of(
+    'a',
+    'b',
+    'c',
+);
+
+json_decode($model);
+// {"e":"e","f":"f","a":"a","b":"b","c":"c","d":"d"}
+// ViewModelでviewに引き渡す値の加工をすることができる
+```
+
+ArrayAccessObject example:
+
+```
+use use Takemo101\PHPSupport\ViewModel\ArrayAccessObject,
+$object = new ArrayAccessObject([
+    'a' => 'a',
+    'b' => [
+        'c' => 'c',
+    ],
+]);
+
+$object->b->c;
+// 多重配列をオブジェクトのように扱うことができる
+```

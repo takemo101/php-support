@@ -6,6 +6,7 @@ use Takemo101\PHPSupport\Contract\Bootstrap\{
     Loader,
     LoaderResolver as Contract,
 };
+use Takemo101\PHPSupport\Facade\Injector;
 
 /**
  * default loader resolver
@@ -20,6 +21,6 @@ class LoaderResolver implements Contract
      */
     public function create(string $loader): Loader
     {
-        return new $loader;
+        return Injector::make($loader);
     }
 }

@@ -22,7 +22,7 @@ abstract class AbstractTypeCollection extends AbstractArrayCollection
      * 追加
      *
      * @param mixed $element
-     * @return self
+     * @return static
      */
     public function add($element)
     {
@@ -35,7 +35,7 @@ abstract class AbstractTypeCollection extends AbstractArrayCollection
      *
      * @param mixed $key
      * @param mixed $element
-     * @return self
+     * @return static
      */
     public function set($key, $element)
     {
@@ -47,7 +47,7 @@ abstract class AbstractTypeCollection extends AbstractArrayCollection
      * 要素を入れ替える
      *
      * @param array $elements
-     * @return self
+     * @return static
      */
     public function replace(array $elements)
     {
@@ -58,5 +58,54 @@ abstract class AbstractTypeCollection extends AbstractArrayCollection
         }
 
         return $this;
+    }
+
+    /**
+     * マージ
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function merge(array $elements)
+    {
+        $this->checkElements($elements);
+        return parent::merge($elements);
+    }
+
+    /**
+     * 配列の値から新しい配列を生成する
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function combine(array $elements)
+    {
+        $this->checkElements($elements);
+        return parent::combine($elements);
+    }
+
+    /**
+     * 配列を結合する
+     *
+     * @param array $elements
+     * @return static
+     */
+    public function union(array $elements)
+    {
+        $this->checkElements($elements);
+        return parent::union($elements);
+    }
+
+    /**
+     * 値を検索する
+     *
+     * @param mixed $element
+     * @param boolean $strict
+     * @return mixed
+     */
+    public function search($element, bool $strict = true)
+    {
+        $this->checkElementType($element);
+        return parent::search($element);
     }
 }
