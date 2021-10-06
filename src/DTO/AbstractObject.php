@@ -4,6 +4,7 @@ namespace Takemo101\PHPSupport\DTO;
 
 use ReflectionClass;
 use JsonSerializable;
+use ArrayObject;
 
 /**
  * DTOのベースクラス
@@ -32,7 +33,7 @@ abstract class AbstractObject implements JsonSerializable
      */
     protected $__converters = [];
 
-    public function __construct(array $inputs = [])
+    public function __construct(array|object $inputs = [])
     {
         PropertyFlipAliasesCache::cache($this);
         $this->loadProperties($inputs);
@@ -41,12 +42,14 @@ abstract class AbstractObject implements JsonSerializable
     /**
      * プロパティのロード
      *
-     * @param array $inputs
+     * @param array|object $inputs
      * @throws PropertyTypeException
      * @return void
      */
-    public function loadProperties(array $inputs)
+    public function loadProperties(array|object $inputs)
     {
+        $inputs = (new ArrayObject($inputs))->getArrayCopy();
+
         // プロパティタイプコレクションの生成
         $collection = PropertyTypesCollection::fromObject($this);
 

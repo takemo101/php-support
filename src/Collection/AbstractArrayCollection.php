@@ -5,7 +5,7 @@ namespace Takemo101\PHPSupport\Collection;
 use Takemo101\PHPSupport\Collection\Support\IterableTrait;
 use Takemo101\PHPSupport\Contract\Collection\{
     Collection,
-    Iteratable,
+    Reducer,
 };
 use OutOfBoundsException;
 use JsonSerializable;
@@ -13,7 +13,7 @@ use JsonSerializable;
 /**
  * abstract array collection class
  */
-abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSerializable
+abstract class AbstractArrayCollection implements Collection, JsonSerializable
 {
     use IterableTrait;
 
@@ -291,6 +291,21 @@ abstract class AbstractArrayCollection implements Collection, Iteratable, JsonSe
     public function search($element, bool $strict = true)
     {
         return array_search($element, $this->items, $strict);
+    }
+
+    /**
+     * Reducerによって配列を変化させる
+     *
+     * @param Reducer $reducer
+     * @return static
+     */
+    public function reduce(Reducer $reducer)
+    {
+        return new static(
+            $reducer->reduce(
+                $this->all()
+            )
+        );
     }
 
     /**

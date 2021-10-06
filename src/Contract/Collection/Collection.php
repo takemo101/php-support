@@ -6,7 +6,7 @@ namespace Takemo101\PHPSupport\Contract\Collection;
  * collection interface
  * 主に配列操作
  */
-interface Collection
+interface Collection extends Iteratable
 {
     /**
      * 追加
@@ -154,6 +154,14 @@ interface Collection
      * @return static
      */
     public function union(array $elements);
+
+    /**
+     * Reducerによって配列を変化させる
+     *
+     * @param Reducer $reducer
+     * @return static
+     */
+    public function reduce(Reducer $reducer);
 
     /**
      * 値を検索する

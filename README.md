@@ -50,6 +50,7 @@ foreach ($collection as $item) {
 ## Enum
 
 列挙型の実装をサポート
+※ php8.1 から enum がサポートされたので利用非推奨
 
 example:
 
