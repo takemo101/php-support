@@ -7,6 +7,12 @@ use Takemo101\PHPSupport\Collection\{
     ArrayCollection,
     AbstractTypeCollection,
 };
+use Takemo101\PHPSupport\Collection\Reducer\{
+    Diff,
+    Distinct,
+    Only,
+    Except,
+};
 
 /**
  * collection test
@@ -98,6 +104,70 @@ class CollectionTest extends TestCase
         $this->assertTrue($startCount != $changeCount);
         $this->assertNotEquals($last, $collection->last()->getValue());
     }
+
+    public function test__ArrayCollection__reduce__ok()
+    {
+        $diffData = '1';
+        $base = [
+            'a' => $diffData,
+            'b' => '2',
+            'c' => '3',
+        ];
+        $data = [
+            'a' => '2',
+            'b' => '2',
+            'c' => '3',
+        ];
+
+        $collection = ArrayCollection::of($base);
+        $collection = $collection->reduce(new Diff($data));
+
+        $this->assertEquals($collection->count(), 1);
+        $this->assertEquals($collection->first(), $diffData);
+
+        $base = [
+            'a' => '2',
+            'b' => '2',
+            'c' => '4',
+        ];
+
+        $collection = ArrayCollection::of($base);
+        $collection = $collection->reduce(new Distinct);
+
+        $this->assertEquals($collection->count(), 1);
+    }
+
+    public function test__TypeCollection__reduce__ok()
+    {
+        $diffData = '1';
+        $base = [
+            'a' => new Element($diffData),
+            'b' => new Element('2'),
+            'c' => new ELement('3'),
+        ];
+        $data = [
+            'a' => new Element('2'),
+            'b' => new Element('2'),
+            'c' => new Element('3'),
+        ];
+
+        $collection = ElementCollection::of($base);
+        $collection = $collection->reduce(new Diff($data, true));
+
+        $this->assertEquals($collection->count(), 1);
+        $this->assertEquals($collection->first()->getValue(), $diffData);
+
+        $base = [
+            'a' => new Element('2'),
+            'b' => new Element('2'),
+            'c' => new Element('4'),
+        ];
+
+        $collection = ElementCollection::of($base);
+        $collection = $collection->reduce(new Distinct);
+
+        $this->assertEquals($collection->count(), 1);
+    }
 }
 
 /**
@@ -125,6 +195,11 @@ class Element
     public function getValue(): string
     {
         return $this->value;
+    }
+
+    public function __toString()
+    {
+        return $this->getValue();
     }
 }
 
